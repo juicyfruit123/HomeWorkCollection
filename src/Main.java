@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -19,7 +19,7 @@ public class Main {
         Scanner scanner = new Scanner(file);
         Map<String, Integer> statistics = new TreeMap<>();
         while (scanner.hasNext()) {
-            String word = scanner.useDelimiter("\\s+|[.,?!]+|\\t+").next().toLowerCase();
+            String word = scanner.useDelimiter("\\s+|[.,?!]+|\\t+|\\n").next().toLowerCase();
             Integer count = statistics.get(word);
             if (count == null) {
                 count = 0;
@@ -27,20 +27,14 @@ public class Main {
             statistics.put(word, ++count);
         }
         System.out.println(statistics.toString());
-        int maxCount = 0;
-        ArrayList<String> wordWithMaxIter = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : statistics.entrySet()) {
-            if (maxCount < entry.getValue()) {
-                maxCount = entry.getValue();
-            }
-        }
+
+        Integer[] array = statistics.values().toArray(new Integer[0]);
+        Arrays.sort(array);
 
         for (Map.Entry<String, Integer> entry : statistics.entrySet()) {
-            if (maxCount == entry.getValue()) {
-                wordWithMaxIter.add(entry.getKey());
+            if (array[array.length - 1].equals(entry.getValue())) {
+                System.out.println("Слово, которое встречается чаще всего- " + entry.getKey() + " " + array[array.length - 1]);
             }
         }
-        int finalMaxCount = maxCount;
-        wordWithMaxIter.forEach(str -> System.out.println("Слово, которое встречается больше всего- " + str + " " + finalMaxCount + " раза"));
     }
 }
