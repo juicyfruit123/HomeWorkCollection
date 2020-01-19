@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,6 +13,9 @@ public class Main {
         Scanner consoleScanner = new Scanner(System.in);
         String filePath = consoleScanner.next();
         Path file = Paths.get(filePath);
+        if (!Files.isRegularFile(file) || !Files.isWritable(file)) {
+            throw new IllegalArgumentException((filePath + " is not directory or is not writable"));
+        }
         Scanner scanner = new Scanner(file);
         Map<String, Integer> statistics = new TreeMap<>();
         while (scanner.hasNext()) {
